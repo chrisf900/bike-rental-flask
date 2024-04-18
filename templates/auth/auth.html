@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>login eBike</title>
+        <link rel="stylesheet" href="static/css/style.css" />
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="theme-color" content="#33b5e5" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+        <link rel="stylesheet" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css" />
+        <link rel="stylesheet" id="roboto-subset.css-css" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/mdb5/fonts/roboto-subset.css?ver=3.9.0-update.5" type="text/css" media="all" />
+    </head>
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex align-items-center justify-content-center h-100">
+                <div class="col-md-8 col-lg-7 col-xl-6">
+                    <img src="static/login-icon.png" class="img-fluid" alt="Phone image" />
+                </div>
+                <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                    <form id="login-form">
+                        <!-- Email input -->
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="floatingInput" name="username" />
+                            <label for="floatingInput">Email address</label>
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="floatingPassword" name="password" />
+                            <label for="floatingPassword">Password</label>
+                        </div>
+
+                        <!-- Submit button -->
+                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block">Ingresa</button>
+
+                        <div class="d-flex align-items-center my-4">
+                            <p class="mb2-l pb-lg-2">¿No tienes una cuenta? <a href="#!"> Registrate</a></p>
+                        </div>
+
+                        <div class="divider d-flex align-items-center my-4">
+                            <p class="text-center fw-bold mx-3 mb-0 text-muted">O</p>
+                        </div>
+
+                        <a data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998;" href="#!" role="button"> <i class="fab fa-facebook-f me-2"></i>Ingresa con Facebook </a>
+                        <a data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" style="background-color: #55acee;" href="#!" role="button"> <i class="fab fa-twitter me-2"></i>Ingresa con Twitter</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</html>
+
+<script>
+    const loginForm = document.getElementById("login-form");
+    loginForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const formData = new FormData(loginForm);
+        await login(formData);
+    });
+
+    async function login(body){
+        let response = await fetch('/api/v1/login', {method: 'POST', body: body});
+        if(response.ok) {
+            let data = await response.json();
+            localStorage.setItem("jwt-token", data.token);
+            localStorage.setItem("ext_user", data.user_id);
+            window.location.href = "/map";
+            return data;
+        } else if(response.status === 401){
+            alert("Invalid credentials");
+        }
+    }
+</script>

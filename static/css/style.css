@@ -1,8 +1,23 @@
 .map{
-    width: 700px;
-    height:600px;
+    position: relative;
+    height: 400px;
 }
-.container-trip-form{
-    margin-top: 50px;
-    display: none;
+.body-container{
+    padding: 5%;
+}
+.div-button{
+    padding: 10%;
+}
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+.btn-block{
+    margin-top: 5%;
+}
+.div-trip{
+    margin: 10%;
 }
