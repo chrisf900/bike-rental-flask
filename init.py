@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_migrate import Migrate
 
+from createdata import bp
 from database import db
 
 load_dotenv(".env")
@@ -18,5 +19,6 @@ def create_app():
 
     db.init_app(app=app)
     migrate.init_app(app=app, db=db)
+    app.register_blueprint(bp)
 
     return app

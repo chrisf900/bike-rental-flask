@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy.exc import IntegrityError
+from flask import Blueprint
 
 from database import db
 from mobility.bike.core.models import (
@@ -13,7 +13,10 @@ from mobility.bike.core.models import (
 )
 from mobility.bike.lib.constants import PaymentsMethodConstants
 
+bp = Blueprint("bike-rental-db", __name__)
 
+
+@bp.cli.command()
 def create_data():
     bikes = []
     locations = [
@@ -47,8 +50,6 @@ def create_data():
             )
         )
 
-    print(bikes)
-
     payment_methods = PaymentsMethodConstants.ALLOWED
     payment_method = [
         PaymentMethod(name=pm, created_at=datetime.now()) for pm in payment_methods
@@ -71,7 +72,6 @@ def create_data():
     db.session.bulk_save_objects(payment_method)
     db.session.bulk_save_objects(gender)
     db.session.add(country)
-    db.session.commit()
 
     gender = db.session.query(Gender).filter_by(name="Male").scalar()
 
@@ -97,9 +97,4 @@ def create_data():
     db.session.add(password_history)
     db.session.commit()
     print("[OK] Data Created")
-    print("Admin User Created -> 416000:admin@admin.com:admin")
-
-    try:
-        create_data()
-    except IntegrityError as e:
-        print("[FAIL] ERROR:", e)
+    print("Admin User Created -> external_id:416000 - admin@admin.com:admin")
