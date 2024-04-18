@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="static/css/style.css" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="static/js/geolocation.js" crossorigin=""></script>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
         <link rel="stylesheet" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css" />
@@ -22,11 +23,11 @@
                     <form id="formElem">
                         <div class="md-form">
                             <label for="form-latitude">Latitude</label>
-                            <input type="text" id="form-latitude" class="form-control" name="latitude" placeholder="-33.440059" />
+                            <input type="text" id="form-latitude" class="form-control" name="latitude" placeholder="-33.440059" required />
                         </div>
                         <div class="md-form">
                             <label for="form-longitude">Longitude</label>
-                            <input type="text" id="form-longitude" class="form-control" name="longitude" placeholder="-70.643449" />
+                            <input type="text" id="form-longitude" class="form-control" name="longitude" placeholder="-70.643449" required />
                         </div>
                         <div class="text-center div-trip">
                             <button type="submit" class="btn btn-light-blue">Buscar e-Bikes</button>
@@ -259,6 +260,20 @@
             endTripForm.style.display = "none";
             endTripForm.reset();
         }
+    }
+    // Check geolocation
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                reloadMap(position.coords.latitude, position.coords.longitude);
+            },
+            async (error) => {
+                let position = await getCurrentPosition();
+                await reloadMap(position.location.latitude, position.location.longitude);
+            }
+        );
+    } else {
+        console.error("Geolocation is not supported by this browser.");
     }
 
 </script>
