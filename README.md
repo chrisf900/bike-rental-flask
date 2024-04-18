@@ -3,7 +3,7 @@
 Application that allows you to rent e-Bikes. Available only in Santiago de Chile (CL) with a limited number of bikes.
 
 Functions:
-- Search for e-Bikes in enabled cities.
+- Find e-Bikes in enabled cities.
 - Request trip (start/end).
 - Creation of a user profile (includes calorie tracking).
 
