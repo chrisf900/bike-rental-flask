@@ -1,115 +1,71 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
     <head>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
         <link rel="stylesheet" href="static/css/style.css" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+        <link rel="stylesheet" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css" />
+        <link rel="stylesheet" id="roboto-subset.css-css" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/mdb5/fonts/roboto-subset.css?ver=3.9.0-update.5" type="text/css" media="all" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>BikesMap</title>
     </head>
 
     <body>
-        <div class="row w-100">
-            <div class="col-lg-6 my-4">
-                <div id="base-map" class="map"><div id="map" class="map"></div></div>
-            </div>
-            <div class="col-lg-6 my-4 d-flex align-items-center">
-                <form id="formElem">
-                    <div class="row">
-                        <div class="col-sm">
-                            <label><p>Latitude</p></label>
+        <div class="container-fluid h-100 d-flex flex-column">
+            <div class="row body-container">
+                <!-- Map -->
+                <div id="base-map" class="col-md-6 col-sm-12 map"></div>
+                <div class="col-md-5 col-md-auto">
+                    <form id="formElem">
+                        <div class="md-form">
+                            <label for="form-latitude">Latitude</label>
+                            <input type="text" id="form-latitude" class="form-control" name="latitude" placeholder="-33.440059" />
                         </div>
-                        <div class="col-sm">
-                            <input name="latitude" placeholder="-33.440059" />
+                        <div class="md-form">
+                            <label for="form-longitude">Longitude</label>
+                            <input type="text" id="form-longitude" class="form-control" name="longitude" placeholder="-70.643449" />
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm">
-                            <label><p>Longitude</p></label>
+                        <div class="text-center div-trip">
+                            <button type="submit" class="btn btn-light-blue">Buscar e-Bikes</button>
                         </div>
-                        <div class="col-sm">
-                            <input name="longitude" placeholder="-70.643449" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <button type="submit">Start</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="d-grid gap-2 col-6 mx-auto">
-                <button id="start-trip-button" class="btn btn-primary" type="button">Start Trip</button>
-                <button id="end-trip-button" class="btn btn-primary" type="button">End Trip</button>
-            </div>
-            <div id="start-end-forms">
-                <div id="start-trip-container" class="container, container-trip-form">
-                    <form id="request-trip-form">
-                        <div class="row">
-                            <div class="col-sm">
-                                <label><p>User Profile ID</p></label>
-                            </div>
-
-                            <div class="col-sm">
-                                <input name="user_profile_id" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm">
-                                <label><p>Bike Code</p></label>
-                            </div>
-
-                            <div class="col-sm">
-                                <input name="bike_code" placeholder="BIKE-123456" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm">
-                                <label><p>Select Payment Method</p></label>
-                            </div>
-                            <div class="col-sm">
-                                <select name="payment_method_name">
-                                    <option value="Credit Card" selected>Credit Card</option>
-                                    <option value="Apple Pay">Apple Pay</option>
-                                    <option value="Google Pay">Google Pay</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <button type="submit">Start</button>
+                        <div class="text-center div-trip">
+                            <button id="start-trip-button" class="btn btn-primary" type="button">Iniciar Viaje</button>
+                            <button id="end-trip-button" class="btn btn-primary" type="button">Terminar Viaje</button>
                         </div>
                     </form>
-                </div>
 
-                <div id="end-trip-container" class="container, container-trip-form">
-                    <form id="end-trip-form">
-                        <div class="row">
-                            <div class="col-sm">
-                                <label><p>User Profile ID</p></label>
-                            </div>
-                            <div class="col-sm">
-                                <input name="user_profile_id" />
-                            </div>
+                    <form id="end-trip-form" class="row g-3" style="display: none;">
+                        <div class="col-md-4">
+                            <label for="form-EndLatitude">End Latitude</label>
+                            <input type="text" id="form-EndLatitude" class="form-control" name="end_latitude" placeholder="-33.440059" required />
                         </div>
-                        <div class="row">
-                            <div class="col-sm">
-                                <label><p>Latitude</p></label>
-                            </div>
-                            <div class="col-sm">
-                                <input name="end_latitude" placeholder="-33.440059" />
-                            </div>
+                        <div class="col-md-4">
+                            <label for="form-EndLongitude">End Longitude</label>
+                            <input type="text" id="form-EndLongitude" class="form-control" name="end_longitude" placeholder="-70.643449" required />
                         </div>
-                        <div class="row">
-                            <div class="col-sm">
-                                <label><p>Longitude</p></label>
-                            </div>
-                            <div class="col-sm">
-                                <input name="end_longitude" placeholder="-70.643449" />
-                            </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-light-blue">Finalizar</button>
                         </div>
-                        <div class="row">
-                            <button type="submit">End</button>
+                    </form>
+
+                    <form id="start-trip-form" class="row g-3" style="display: none;">
+                        <div class="col-md-4">
+                            <label for="form-bikeCode">Bike Code</label>
+                            <input type="text" class="form-control" id="bikeCode" name="bike_code" placeholder="BIKE-123456" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputState">Método de Pago</label>
+                            <select id="inputState" class="form-select col-md-4" name="payment_method_name" required>
+                                <option value="Credit Card" selected>Credit Card</option>
+                                <option value="Apple Pay">Apple Pay</option>
+                                <option value="Google Pay">Google Pay</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-light-blue">Iniciar</button>
                         </div>
                     </form>
                 </div>
@@ -120,115 +76,190 @@
 
 
 <script>
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+    let token = localStorage.getItem("jwt-token");
+    if (!token) {
+        window.location.href = "/login";
+    }
+    disable_trip_action_btn();
+});
     const coordinatesForm = document.getElementById("formElem");
-    const requestTripForm = document.getElementById("request-trip-form");
+    const startTripForm = document.getElementById("start-trip-form");
     const endTripForm = document.getElementById("end-trip-form");
 
-    coordinatesForm.addEventListener('submit', async e => {
+    coordinatesForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const formData = new FormData(coordinatesForm);
         let data = await sendCoordinates(formData);
         loadMap(data);
     });
-    requestTripForm.addEventListener('submit', async e => {
+    startTripForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const formData = new FormData(requestTripForm);
+        const formData = new FormData(startTripForm);
         let data = await startTrip(formData);
         alert("Trip started. You can now use the e-bike.");
+        await disable_trip_action_btn();
     });
-    endTripForm.addEventListener('submit', async e => {
+    endTripForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const formData = new FormData(endTripForm);
         let data = await endTrip(formData);
         alert("Trip Completed. Within 5 seconds the e-bike will be locked.");
+        await disable_trip_action_btn();
     });
 
-    async function sendCoordinates(body){
-        let response = await fetch('/bike-rental/api/v1/bikes', {method: 'POST', body: body});
-        let data = await response.json();
-        data = JSON.stringify(data);
-        data = JSON.parse(data);
-        return data;
+    async function sendCoordinates(body) {
+        let token = localStorage.getItem("jwt-token");
+        if (!token) {
+            window.location.href = "/login";
+        }
+        let response = await fetch("/bike-rental/api/v1/bikes", { method: "POST", body: body, headers: { Authorization: "Bearer " + token } });
+        if (response.ok) {
+            let data = await response.json();
+            data = JSON.stringify(data);
+            data = JSON.parse(data);
+            return data;
+        } else if (response.status === 401) {
+            window.location.href = "/login";
+        } else {
+            throw response;
+        }
     }
 
-    async function startTrip(body){
-        let user_profile_id = body.get("user_profile_id");
-        body.delete("user_profile_id");
-        let response = await fetch('/bike-rental/api/v1/users/' + parseInt(user_profile_id) + '/trips', {method: 'POST', body: body});
-        let data = await response.json();
-        data = JSON.stringify(data);
-        data = JSON.parse(data);
-        return data;
+    async function startTrip(body) {
+        let token = localStorage.getItem("jwt-token");
+        let user_profile_id = localStorage.getItem("ext_user");
+        if (!token) {
+            window.location.href = "/login";
+        }
+        let response = await fetch("/bike-rental/api/v1/users/" + parseInt(user_profile_id) + "/trips", { method: "POST", body: body, headers: { Authorization: "Bearer " + token } });
+        if (response.ok) {
+            let data = await response.json();
+            data = JSON.stringify(data);
+            data = JSON.parse(data);
+            return data;
+        } else if (response.status === 401) {
+            window.location.href = "/login";
+        } else {
+            throw response;
+        }
     }
 
-    async function endTrip(body){
-        let user_profile_id = body.get("user_profile_id");
-        body.delete("user_profile_id");
-        let response = await fetch('/bike-rental/api/v1/users/' + parseInt(user_profile_id) + '/trips', {method: 'PATCH', body: body});
-        let data = await response.json();
-        data = JSON.stringify(data);
-        data = JSON.parse(data);
-        return data;
+    async function endTrip(body) {
+        let token = localStorage.getItem("jwt-token");
+        let user_profile_id = localStorage.getItem("ext_user");
+        if (!token) {
+            window.location.href = "/login";
+        }
+        let response = await fetch("/bike-rental/api/v1/users/" + parseInt(user_profile_id) + "/trips", { method: "PATCH", body: body, headers: { Authorization: "Bearer " + token } });
+        if (response.ok) {
+            let data = await response.json();
+            data = JSON.stringify(data);
+            data = JSON.parse(data);
+            return data;
+        } else if (response.status === 401) {
+            window.location.href = "/login";
+        } else {
+            throw response;
+        }
     }
 
-    function loadMap(data){
-        var container = L.DomUtil.get('map');
-        if (container && container['_leaflet_id'] != null) {
+    async function getTrips() {
+        let token = localStorage.getItem("jwt-token");
+        let user_profile_id = localStorage.getItem("ext_user");
+        if (!token) {
+            window.location.href = "/login";
+        }
+        let response = await fetch("/bike-rental/api/v1/users/" + parseInt(user_profile_id) + "/trips", { method: "GET", headers: { Authorization: "Bearer " + token } });
+        if (response.ok) {
+            let data = await response.json();
+            data = JSON.stringify(data);
+            data = JSON.parse(data);
+            return data;
+        } else if (response.status === 401) {
+            window.location.href = "/login";
+        } else {
+            throw response;
+        }
+    }
+
+    function loadMap(data) {
+        let container = L.DomUtil.get("map");
+        if (container != null) {
             container.remove();
         }
-        var map_div = document.createElement("div");
-        map_div.setAttribute('id', 'map');
-        document.getElementById('base-map').appendChild(map_div);
+
+        let map_div = document.createElement("div");
+        map_div.setAttribute("id", "map");
+        map_div.classList.add("map");
+        document.getElementById("base-map").appendChild(map_div);
 
         // Map  objects
-        let map = L.map('map').setView([data.lat, data.lon], 16);
+        let map = L.map("map").setView([data.lat, data.lon], 16);
 
         // Base map layer
-        const urlOpenLayers = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-        L.tileLayer(urlOpenLayers, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+        const urlOpenLayers = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+        L.tileLayer(urlOpenLayers, { attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
 
         //L.marker([lat, lon]).addTo(map);
-        let myItems = data.markers
-        var array = [];
-        for (var i = 0; i < myItems.length; i++) {
-            var item = myItems[i];
-            m = new L.marker([item[1],item[2]], {icon: bikeIcon});
+        let myItems = data.markers;
+        let array = [];
+        for (let i = 0; i < myItems.length; i++) {
+            let item = myItems[i];
+            m = new L.marker([item[1], item[2]], { icon: bikeIcon });
             m.bindPopup(item[0]).openPopup();
             array.push(m);
-}
+        }
         L.layerGroup(array).addTo(map);
 
         return map;
     }
 
     let bikeIcon = L.icon({
-    iconUrl: 'static/e-bike-icon.png',
-    iconSize:     [25, 25], // size of the icon
-    iconAnchor:   [20, 20], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-10, -10] // point from which the popup should open relative to the iconAnchor
-});
+        iconUrl: "static/e-bike-icon.png",
+        iconSize: [25, 25], // size of the icon
+        iconAnchor: [20, 20], // point of the icon which will correspond to marker's location
+        popupAnchor: [-10, -10], // point from which the popup should open relative to the iconAnchor
+    });
 
     const startTripButton = document.getElementById("start-trip-button");
     const endTripButton = document.getElementById("end-trip-button");
-    const startTripContainer = document.getElementById("start-trip-container");
-    const endTripContainer = document.getElementById("end-trip-container");
 
-    startTripButton.addEventListener('click', () => {
-        showHideButtonAction(startTripContainer, endTripContainer);
-    })
+    startTripButton.addEventListener("click", () => {
+        showHideButtonAction(startTripForm, endTripForm);
+    });
 
-    endTripButton.addEventListener('click', () => {
-        showHideButtonAction(endTripContainer, startTripContainer);
-    })
+    endTripButton.addEventListener("click", () => {
+        showHideButtonAction(endTripForm, startTripForm);
+    });
+
     function showHideButtonAction(primary_element, secondary_element) {
-    if (primary_element.style.display === "none") {
-        primary_element.style.display = "block";
-        secondary_element.style.display = "none";
-    } else {
-        primary_element.style.display = "none";
-        secondary_element.style.display = "none";
+        if (primary_element.style.display === "none") {
+            primary_element.style.display = "block";
+            secondary_element.style.display = "none";
+        } else {
+            primary_element.style.display = "none";
+            secondary_element.style.display = "none";
+        }
     }
-}
+
+    async function disable_trip_action_btn() {
+        let data = await getTrips();
+        var last_trip = data[0]
+
+        if (!last_trip.end_time) {
+            startTripButton.disabled = true;
+            endTripButton.disabled = false;
+            startTripForm.style.display = "none";
+            startTripForm.reset();
+        } else {
+            endTripButton.disabled = true;
+            startTripButton.disabled = false;
+            endTripForm.style.display = "none";
+            endTripForm.reset();
+        }
+    }
 
 </script>
 
