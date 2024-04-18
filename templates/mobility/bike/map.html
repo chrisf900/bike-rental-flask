@@ -7,6 +7,9 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
         <link rel="stylesheet" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment-with-locales.min.js" integrity="sha512-4F1cxYdMiAW98oomSLaygEwmCnIP38pb4Kx70yQYqRwLVCs3DbRumfBq82T08g/4LJ/smbFGFpmeFlQgoDccgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet" id="roboto-subset.css-css" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/mdb5/fonts/roboto-subset.css?ver=3.9.0-update.5" type="text/css" media="all" />
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,6 +40,11 @@
                             <button id="end-trip-button" class="btn btn-primary" type="button">Terminar Viaje</button>
                         </div>
                     </form>
+                    <div class="text-center div-trip">
+                    <!-- Button trigger modal -->
+                        <button id="user-trips" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#tripModal" onclick="showCompletedTrip()">Viajes Realizados</button>
+
+                        </div>
 
                     <form id="end-trip-form" class="row g-3" style="display: none;">
                         <div class="col-md-4">
@@ -73,6 +81,33 @@
             </div>
         </div>
     </body>
+
+    <!-- Modal -->
+    <div class="modal fade" id="tripModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Viajes Realizados</h5>
+          </div>
+          <div class="modal-body">
+          <table id="user-trip-table" class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Tiempo en Viaje</th>
+                  <th scope="col">Tarifa</th>
+                  <th scope="col">Calorias</th>
+                </tr>
+              </thead>
+              <tbody id="trip-list"></tbody>
+          </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </html>
 
 
@@ -247,9 +282,9 @@
 
     async function disable_trip_action_btn() {
         let data = await getTrips();
-        var last_trip = data[0]
+        let last_trip = data[0] || null
 
-        if (!last_trip.end_time) {
+        if (last_trip !== null && !last_trip.end_time) {
             startTripButton.disabled = true;
             endTripButton.disabled = false;
             startTripForm.style.display = "none";
@@ -276,5 +311,20 @@
         console.error("Geolocation is not supported by this browser.");
     }
 
-</script>
+    async function showCompletedTrip() {
+        let table = document.getElementById("user-trip-table");
+        table.tBodies["trip-list"].remove();
+        let tbody = table.createTBody();
+        tbody.setAttribute("id", "trip-list");
 
+        let data = await getTrips();
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].fare !== null) {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `<th scope="row">` + moment(data[i].start_time).format("DD/MM/YYYY HH:mm:ss") + `</th> <td>` + moment(data[i].time_used, "HH:mm:ss").format('HH:mm:ss') + `</td> <td>$` + data[i].fare + `</td> <td>` + data[i].calorie + `</td>`;
+                tbody.append(tr);
+            }
+        }
+    }
+
+</script>
