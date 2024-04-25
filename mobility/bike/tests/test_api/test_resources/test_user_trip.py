@@ -2,17 +2,20 @@ from http import HTTPStatus
 
 import pytest
 
+from mobility.bike.api.v1.resources.user_trip import UserTripResource
 from mobility.bike.lib.exceptions import (
     BikeNotFoundError,
     InvalidBikeStatusTransition,
-    UserNotFoundError,
     UserWithActiveTrip,
 )
+from users.lib.exceptions import UserNotFoundError
 
 URL_PATH = "/bike-rental/api/v1/users/{}/trips".format(416000)
 
 
 def test_get_user_trip(mocker, client):
+    mocker.patch("flask_jwt_extended.view_decorators.verify_jwt_in_request")
+    mocker.patch.object(UserTripResource, "user_from_request")
     mock_get_paginated_user_trips = mocker.patch(
         "mobility.bike.api.v1.resources.user_trip.services.get_paginated_user_trips_by_user"
     )
@@ -34,6 +37,8 @@ def test_get_user_trip(mocker, client):
     ],
 )
 def test_post_user_trip(mocker, client, exception, status_code_expected):
+    mocker.patch("flask_jwt_extended.view_decorators.verify_jwt_in_request")
+    mocker.patch.object(UserTripResource, "user_from_request")
     mock_start_trip = mocker.patch(
         "mobility.bike.api.v1.resources.user_trip.services.start_trip", return_value=[]
     )
@@ -53,6 +58,8 @@ def test_post_user_trip(mocker, client, exception, status_code_expected):
 
 
 def test_patch_user_trip(mocker, client):
+    mocker.patch("flask_jwt_extended.view_decorators.verify_jwt_in_request")
+    mocker.patch.object(UserTripResource, "user_from_request")
     mocker.patch(
         "mobility.bike.api.v1.resources.user_trip.services.end_trip", return_value=[]
     )

@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 
 def test_bike_resource(mocker, client):
+    mocker.patch("flask_jwt_extended.view_decorators.verify_jwt_in_request")
     mocker.patch(
         "mobility.bike.api.v1.resources.bike.services.get_available_bikes_by_location"
     )

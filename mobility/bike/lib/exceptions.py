@@ -14,9 +14,9 @@ class NoBikesAvailable(Exception):
     pass
 
 
-class UserNotFoundError(Exception):
+class BikeNotFoundError(Exception):
     pass
 
 
-class BikeNotFoundError(Exception):
+class CountryNotFoundError(Exception):
     pass

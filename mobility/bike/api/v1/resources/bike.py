@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from flask import make_response, request
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restx import Namespace, Resource
 from marshmallow import ValidationError
 
@@ -15,6 +16,7 @@ api = Namespace("BikeResource", description="Bike Map")
 class BikeResource(Resource):
     validator_class = SearchCoordinatesSchema()
 
+    @jwt_required()
     def post(self):
         try:
             data = self.validator_class.load(data=request.form)
