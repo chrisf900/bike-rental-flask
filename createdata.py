@@ -3,20 +3,14 @@ from datetime import datetime
 from flask import Blueprint
 
 from database import db
-from mobility.bike.core.models import (
-    Bike,
-    Country,
-    Gender,
-    PasswordHistory,
-    PaymentMethod,
-    User,
-)
+from mobility.bike.core.models import Bike, Country, PaymentMethod
 from mobility.bike.lib.constants import PaymentsMethodConstants
+from users.models import Gender, PasswordHistory, User
 
-bp = Blueprint("bike-rental-db", __name__)
+create_data_bp = Blueprint("bike-rental-db", __name__)
 
 
-@bp.cli.command()
+@create_data_bp.cli.command()
 def create_data():
     bikes = []
     locations = [

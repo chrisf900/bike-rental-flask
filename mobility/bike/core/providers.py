@@ -6,15 +6,8 @@ import overpy
 from flask_sqlalchemy.query import Query
 
 from database import db
-from mobility.bike.core.models import Bike, PaymentMethod, Trip, User
-from mobility.bike.lib.exceptions import BikeNotFoundError, UserNotFoundError
-
-
-def get_user_by_external_id(user_external_id: int) -> User:
-    user = db.session.query(User).filter_by(external_id=user_external_id).scalar()
-    if not user:
-        raise UserNotFoundError()
-    return user
+from mobility.bike.core.models import Bike, Country, PaymentMethod, Trip
+from mobility.bike.lib.exceptions import BikeNotFoundError, CountryNotFoundError
 
 
 def get_bike_by_bike_code(bike_code: int) -> Bike:
@@ -117,3 +110,10 @@ def end_trip(
     db.session.commit()
 
     return instance
+
+
+def get_country_by_code(country_code: str) -> Country:
+    country = db.session.query(Country).filter_by(code=country_code.upper()).scalar()
+    if not country:
+        raise CountryNotFoundError()
+    return country
